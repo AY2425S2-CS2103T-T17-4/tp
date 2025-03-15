@@ -59,6 +59,9 @@ public class SampleDataUtil {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns a module set containing the list of strings given.
+     */
     public static Set<Module> getModuleSet(String... modules) {
         return Arrays.stream(modules)
                 .map(ModuleRegistry::getModuleByCode)

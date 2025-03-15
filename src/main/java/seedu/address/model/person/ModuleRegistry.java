@@ -19,7 +19,7 @@ public enum ModuleRegistry {
     CS2109S(new Module("CS2109S", "Introduction to AI and Machine Learning")),
     CS3230(new Module("CS3230", "Design and Analysis of Algorithms")),
     CS2101(new Module("CS2101", "Effective Communication for Computing Professionals"));
-
+    public static final String MESSAGE_UNREGISTERED_MODULE = "input module is not registered.";
     private final Module module;
 
     ModuleRegistry(Module module) {
