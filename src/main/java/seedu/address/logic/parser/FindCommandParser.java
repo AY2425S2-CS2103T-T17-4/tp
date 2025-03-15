@@ -3,10 +3,11 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Arrays;
+import java.util.List;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -21,13 +22,39 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
         if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            throwParseException();
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
+        String[] splitArgs = trimmedArgs.split("\\s+", 2);
+        if (splitArgs.length != 2) {
+            throwParseException();
+        }
 
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+        String prefix = splitArgs[0].trim();
+        String keyword = splitArgs[1].trim();
+
+        PersonContainsKeywordsPredicate.SearchField searchField = null;
+        switch (prefix) {
+        case "/name":
+            searchField = PersonContainsKeywordsPredicate.SearchField.NAME;
+            break;
+        case "/phone":
+            searchField = PersonContainsKeywordsPredicate.SearchField.PHONE;
+            break;
+        default:
+            throwParseException();
+        }
+
+        if (searchField == null) {
+            throwParseException();
+        }
+
+        List<String> keywords = Arrays.asList(keyword.split("\\s+"));
+        return new FindCommand(new PersonContainsKeywordsPredicate(searchField, keywords));
     }
 
+    private void throwParseException() throws ParseException {
+        throw new ParseException(
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
 }
