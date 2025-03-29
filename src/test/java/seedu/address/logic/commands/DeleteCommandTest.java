@@ -48,6 +48,41 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_multipleValidIndex_success() {
+        Person firstPersonToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person secondPersonToDelete = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        List<Index> listToDelete = new LinkedList<>();
+        listToDelete.add(INDEX_FIRST_PERSON);
+        listToDelete.add(INDEX_SECOND_PERSON);
+        DeleteCommand deleteCommand = new DeleteCommand(listToDelete);
+
+        String deletedNames = firstPersonToDelete.getName().toString() + ", "
+                + secondPersonToDelete.getName().toString();
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
+                deletedNames);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(firstPersonToDelete);
+        expectedModel.deletePerson(secondPersonToDelete);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    //Multiple input indexes, two of them are valid, one of them is out of size of addressbook.
+    @Test
+    public void execute_multipleIndexWithInvalid_throwsCommandException() {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        List<Index> listToDelete = new LinkedList<>();
+        listToDelete.add(INDEX_FIRST_PERSON);
+        listToDelete.add(INDEX_SECOND_PERSON);
+        listToDelete.add(outOfBoundIndex);
+
+        DeleteCommand deleteCommand = new DeleteCommand(listToDelete);
+
+        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         LinkedList<Index> outOfBoundIndexList = new LinkedList<>(Arrays.asList(outOfBoundIndex));
@@ -86,6 +121,8 @@ public class DeleteCommandTest {
 
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
+
+
 
     @Test
     public void equals() {

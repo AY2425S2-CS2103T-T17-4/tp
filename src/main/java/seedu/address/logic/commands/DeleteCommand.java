@@ -44,17 +44,18 @@ public class DeleteCommand extends Command {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
-
             Person personToDelete = lastShownList.get(index.getZeroBased());
-            model.deletePerson(personToDelete);
             deletedPersonList.add(personToDelete);
         }
+
+        for (Person personToDelete : deletedPersonList) {
+            model.deletePerson(personToDelete);
+        }
+
         String deletedPersonNames = deletedPersonList.stream()
                 .map(Person::getName)
                 .map(Name::toString)
                 .collect(Collectors.joining(", "));
-
-
 
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedPersonNames));
     }
