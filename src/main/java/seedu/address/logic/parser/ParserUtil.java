@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_MODULE_CODE;
 
 import java.util.Collection;
@@ -13,7 +12,6 @@ import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Email;
@@ -152,7 +150,7 @@ public class ParserUtil {
     public static Set<Module> parseModules(Collection<String> moduleCodes) throws ParseException {
         requireNonNull(moduleCodes);
         if (moduleCodes.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(MESSAGE_INVALID_MODULE_CODE);
         }
         final Set<Module> moduleSet = new HashSet<>();
         for (String moduleCode : moduleCodes) {

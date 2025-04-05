@@ -22,10 +22,11 @@ public class FavCommand extends Command {
             + "already exists in AcademySource.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Set/unset the favourite status "
             + "of the person identified "
-            + "by the index number used in the displayed person list. "
-            + "If the contact is not labelled as favourite, labels it as favourite."
-            + "Otherwise, un-label it."
-            + "Parameters: INDEX (must be a positive integer) ";
+            + "by the index number used in the displayed person list.\n"
+            + "If the contact is not labelled as favourite, labels it as favourite. "
+            + "Otherwise, un-label it.\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 1 ";
     public static final String MESSAGE_MARK_PERSON_SUCCESS = "Added %1$s as favourites!";
     public static final String MESSAGE_UNMARK_PERSON_SUCCESS = "Removed %1$s from favourites!";
     private final Index index;
